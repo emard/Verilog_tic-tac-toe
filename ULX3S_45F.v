@@ -26,8 +26,8 @@ module ULX3S_45F (
   );
 
   // mapping from board to video color
-  // O = 2'b01 = green
-  // X = 2'b11 = red
+  // X = 2'b01 = green (player)
+  // O = 2'b11 = red   (fpga)
   wire [8:0] red, green;
   always @(posedge clk_25MHz)
   begin

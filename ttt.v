@@ -3,26 +3,21 @@
 // (c) 2018, Warren Toomey, GPL3
 
 `default_nettype none
-`include "user.v"
-`include "xmove.v"
-`include "movemask.v"
-`include "result.v"
-
 `ifdef VERILATOR
 
-module ttt(i_clk, o_setup, o_uart_tx, i_uart_rx);
+module ttt(i_clk, o_setup, o_uart_tx, i_uart_rx, o_board);
   input wire i_clk;
   output wire [31:0] o_setup; // Tell UART co-sim about clocks per baud
   output wire o_uart_tx;    // UART transmit signal line
   input  wire i_uart_rx;    // UART receive signal line
-
+  output wire [17:0] o_board;
 `else
 
-module ttt(i_clk, o_uart_tx, i_uart_rx);
+module ttt(i_clk, o_uart_tx, i_uart_rx, o_board);
   input wire i_clk;
   output wire o_uart_tx;    // UART transmit signal line
   input  wire i_uart_rx;    // UART receive signal line
-
+  output wire [17:0] o_board;
 `endif
 
   parameter CLOCK_RATE_HZ = 1000000;	// System clock rate in Hz
@@ -37,6 +32,7 @@ module ttt(i_clk, o_uart_tx, i_uart_rx);
 					// Nine bitpairs. Each pair:
 					// 00 is empty, 01 is O (user),
 					// 11 is FPGA (X)
+  assign o_board = board;
 
   localparam INITIALISE_STATE = 5'h0;	// List of state names
   localparam ASK_USER_MOVE    = 5'h1;

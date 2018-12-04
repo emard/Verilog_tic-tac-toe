@@ -16,6 +16,7 @@ module movemask(i_move, i_user, o_mask, o_bad_move);
   wire [17:0] bitmove;		// 2-bit move mask
   assign bitmove= (i_user == 1) ? 18'd3 : 18'd1;	// X is 11, O is 01
 
+  // user input layout from PC numpad: 789/456/123
   always @(*)
     case (i_move)
       4'd1: begin

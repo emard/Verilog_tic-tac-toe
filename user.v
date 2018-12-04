@@ -10,6 +10,7 @@
 `include "rxuartlite.v"
 `endif
 
+
 module user(i_clk, o_uart_tx, i_uart_rx,
 	i_board, i_result, i_result_stb, i_needinput,
 	o_busy, o_move, o_validmove_stb
@@ -35,6 +36,12 @@ module user(i_clk, o_uart_tx, i_uart_rx,
   wire [7:0] rx_data;          	// Each char typed by user, not all bits used
   /* verilator lint_on UNUSED */
   wire rx_avail;		// If true, user data is available
+
+  reg [3:0] keymap [0:15];
+
+  initial begin
+      $readmemh("keymap.mem", keymap);
+  end
 
   // List of available strings
   reg[7:0] Str[0:154];
@@ -360,7 +367,7 @@ module user(i_clk, o_uart_tx, i_uart_rx,
 	   state <= 23;
 
       23: begin
-      	   o_move <= rx_data[3:0];
+      	   o_move <= keymap[rx_data[3:0]];
       	   o_validmove_stb <= 1;
 	   o_busy <= 0;
 	   state <= 24;
